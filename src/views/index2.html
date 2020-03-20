@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Arvo&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body onload="fetchSomeData()">
+    <style>
+      .table {
+        font-family: "Arvo", serif;
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 50px;
+        text-align: center;
+      }
+
+      td,
+      th {
+        border: 1px solid black;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: lightseagreen;
+      }
+
+      tr:nth-child(odd) {
+        background-color: paleturquoise;
+      }
+
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: rgb(112, 196, 112);
+        color: blacks;
+        height: 120px;
+      }
+
+      .support {
+        position: absolute;
+        bottom: 3%;
+        left: 20%;
+      }
+
+      .heading1 {
+        text-align: center;
+        position: absolute;
+        top: 15px;
+        padding-left: 35%;
+        font-family: "Arvo", serif;
+      }
+
+      .heading {
+        font-family: "Arvo", serif;
+      }
+
+      .button1 {
+        font-size: large;
+        background-color: transparent;
+        border: none;
+        color: white;
+        padding: 5px 32px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    </style>
+
+    <a href="/">Add New Business/Update</a>
+    <h1 class="heading1">Charleston Local Businesses</h1>
+    <br /><br />
+    <div id="writetopage"></div>
+
+    <script>
+      function conf() {
+        var con = confirm(
+          "You're no longer registered with Charleston Pages. Please refresh the page to confirm."
+        );
+      }
+
+      function display(response) {
+        console.log(response);
+        // document.getElementById("writetopage").innerHTML = response["5e4ddcf6766d5303a6821725"].username;
+        let tableData =
+          '<table class="table" style="width:100%"><tr><th>Order</th><th>Name of the Business</th><th>Owner Name</th><th>Location</th><th>Contact</th><th>Unlist</th></tr>';
+        response.forEach(function(item, index) {
+          tableData +=
+            "<tr><td>" +
+            (index + 1) +
+            "</td>" +
+            "<td>" +
+            response[index].username +
+            "</td>" +
+            "<td>" +
+            response[index].password +
+            "</td>" +
+            "<td>" +
+            response[index].state +
+            "</td>" +
+            "<td>" +
+            response[index].city +
+            "</td>" +
+            "<td>" +
+            `<button class="button1" onclick="deleteUser('${response[index].username}');conf()">Delete</button>` +
+            "</td>" +
+            "</tr>";
+        });
+        tableData += "</table>";
+        document.getElementById("writetopage").innerHTML = tableData;
+      }
+      // document.getElementById("submit").onsubmit = function() {
+      //   location.reload(true);
+      // };
+
+      function fetchSomeData() {
+        fetch("http://localhost:8000/users/").then(response =>
+          response.json().then(display)
+        );
+      }
+
+      async function deleteUser(username) {
+        const response = await fetch(
+          "http://localhost:8000/user?username=" + username,
+          {
+            method: "DELETE",
+            headers: {
+              "content-type": "application/json"
+            }
+            //body: JSON.stringify({password: pw})
+          }
+        );
+      }
+    </script>
+    <div class="footer">
+      <h1 class="heading">Charleston Pages</h1>
+      <img
+        class="support"
+        src="https://pbs.twimg.com/media/D053T--WoAAgvdL.png"
+        alt="supportsmall"
+        width="100px"
+        height="100px"
+      />
+    </div>
+  </body>
+</html>

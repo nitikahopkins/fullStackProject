@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link
+    href="https://fonts.googleapis.com/css?family=Arvo&display=swap"
+    rel="stylesheet"
+  />    <style>
+.main {
+  text-align: center;
+  padding-left: 10px;
+  position: absolute;
+  top: 40%;
+  left: 10%;
+  transform: translate(-50%, -50%);
+  
+}
+
+.heading {
+  text-align: center;
+  position: absolute;
+  top: 8px;
+  left: 16px;
+  font-family: "Arvo", serif;
+}
+
+.heading2 {
+  position: absolute;
+  top: 8px;
+  right: 30px;
+  font-family: "Arvo", serif;
+}
+
+.container {
+  position: relative;
+  text-align: center;
+  color: black;
+  background-size: auto;
+  
+}
+
+.support {
+  position: absolute;
+  top: 3%;
+  left: 20%;
+}
+
+.button1 {
+    font-size: large;
+    background-color: transparent;
+    border: none;
+    color: black;
+    padding: 5px 32px;
+    text-decoration: none;
+    cursor: pointer;
+    
+}
+
+.list {
+  position: absolute;
+  top: 30%;
+  right: 20%;
+  text-decoration: none;
+  font-family: "Arvo", serif;
+  font-size: large;
+  color: red;
+  font-weight: bolder;
+}
+
+
+
+    </style>
+   
+  </head>
+  <body>
+    <div class="container">
+      <img src="https://filene.org/imager/filene_org/assets/images-layout/small-business_ec01db4f8ffc5e9a35070119d714cddf.png" alt="bg image" width="100%">
+    <h1 class="heading">Charleston Pages</h1>
+    <img class="support" src="https://pbs.twimg.com/media/D053T--WoAAgvdL.png" alt="supportsmall" width="100px" height="100px">
+    
+    <h2 class="heading2">Register your new business here!</h1>
+    <div class="main">
+      <form onsubmit="setTimeout(function(){window.location.reload();},10)">
+    <label for="input">Name of the Business:</label><br />
+    <input type="text" id="username" class="name" /><br /><br />
+    <label for="input" class="oname">Owner Name:</label><br />
+    <input type="text" id="password" /><br /><br />
+    <label for="input">Location:</label><br />
+    <input type="text" id="state" /><br /><br />
+    <label for="input">Contact:</label><br />
+    <input type="text" id="city" /><br /><br />
+    <button id="submit"  class="button1" onclick="postUser();conf()">Submit</button>
+    <button id="submit" class="button1" onclick="putUser();confUpdate()">Update</button><br /><br />
+      </form>
+  </div>
+  <a class="list" href="/home2">Get list of registered businesses</a><br /><br />
+
+</div>
+  
+    <script>
+
+document.getElementById("submit").onsubmit = function(){
+    location.reload(true);
+}
+
+function conf()
+{
+var con=confirm("Thanks for registering with Charleston Pages!");
+}
+
+function confUpdate()
+{
+var con=confirm("We have updated your changes. Go to registered businesses page.");
+}
+
+      async function postUser() {
+        let un = document.getElementById("username").value
+        let pw = document.getElementById("password").value
+        let st = document.getElementById("state").value
+        let ct = document.getElementById("city").value
+
+        const response = await fetch("http://localhost:8000/user", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify({username: un, password: pw, state: st, city: ct})
+        });
+      }
+
+      async function putUser() {
+        let un = document.getElementById("username").value
+        let pw = document.getElementById("password").value
+        let st = document.getElementById("state").value
+        let ct = document.getElementById("city").value
+        
+
+        const response = await fetch("http://localhost:8000/user?username=" + un ,{
+          method: "PUT",
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify({password: pw, state: st, city: ct})
+        });
+      }
+
+
+    </script>
+    </script>
+  </body>
+</html>
